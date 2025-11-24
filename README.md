@@ -14,7 +14,7 @@
 ## Instalación y Ejecución
 1.  **Clonar el repositorio:**
     ```bash
-    git clone [https://github.com/Tittuss/DockerPractica.git](https://github.com/Tittuss/DockerPractica.git)
+    git clone https://github.com/Tittuss/DockerPractica.git
     cd DockerPractica
     ```
 
