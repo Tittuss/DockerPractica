@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  # SERVICIO BD
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: iglesia_db
+    user: root
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=PassSegura123_
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql/data # Persistencia de datos
+    networks:
+      - iglesia-net
+
+  # SERVICIO BACKEND
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: iglesia_api
+    restart: on-failure
+    ports:
+      - "5000:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=db;Database=IglesiaDB;User Id=sa;Password=PassSegura123_;TrustServerCertificate=True;
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - db # Espera a que la BD arranque antes de intentar iniciar
+    networks:
+      - iglesia-net
+
+  # SERVICIO FRONTEND
+  web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: iglesia_web
+    restart: on-failure
+    ports:
+      - "3000:3000" # La web será accesible en localhost:3000
+    depends_on:
+      - api
+    networks:
+      - iglesia-net
+
+# Definición de volúmenes (pa que los datos no se borren al apagar docker)
+volumes:
+  sql_data:
+
+# Definición de red (pa que se vean entre ellos por nombre)
+networks:
+  iglesia-net:
+    driver: bridge

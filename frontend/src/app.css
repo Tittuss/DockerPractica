@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+/* Tokens de color (disponibles como bg-brand, ring-brand-focus, etc.) */
+@theme {
+    --color-brand: #1D1D1D;
+    /* Base: gris casi negro */
+    --color-brand-dark: #0F0F0F;
+    /* Más oscuro (para hover fuerte / fondo sólido) */
+    --color-brand-focus: #3A3A3A;
+    /* Más claro, útil para focus/ring */
+
+}
+
+/* Altura completa para el contenedor raíz */
+@layer base {
+
+    html,
+    body,
+    #root {
+        height: 100%;
+    }
+}
